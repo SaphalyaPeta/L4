@@ -8,26 +8,37 @@ const todoList = () => {
   };
 
   const overdue = () => {
-    return all.filter((todo) => todo.dueDate < today);
+    return all.filter(
+      (item) => item.dueDate < new Date().toLocaleDateString("en-CA")
+    );
   };
 
   const dueToday = () => {
-    return all.filter((todo) => todo.dueDate == today);
+    return all.filter(
+      (item) => item.dueDate === new Date().toLocaleDateString("en-CA")
+    );
   };
 
   const dueLater = () => {
-    return all.filter((todo) => todo.dueDate > today);
+    return all.filter(
+      (item) => item.dueDate > new Date().toLocaleDateString("en-CA")
+    );
   };
 
   const toDisplayableList = (list) => {
-    return list
-      .map(
-        (todo) =>
-          `${todo.completed ? "[x]" : "[ ]"} ${todo.title} ${
-            todo.dueDate == today ? "" : todo.dueDate
-          }`
-      )
-      .join("\n");
+    let ans = [],
+      index;
+    for (index = 0; index < list.length; index++) {
+      let box = list[index].completed === true ? "[x]" : "[ ]";
+      let adddate =
+        list[index].dueDate === new Date().toLocaleDateString("en-CA")
+          ? ""
+          : list[index].dueDate;
+      ans.push(`${box} ${list[index].title} ${adddate}`);
+    }
+    let res = ans.join("\n");
+    ans = res.trim();
+    return ans;
   };
 
   return {
@@ -37,9 +48,7 @@ const todoList = () => {
     overdue,
     dueToday,
     dueLater,
-    toDisplayableList,
   };
 };
 
-// eslint-disable-next-line no-undef
 module.exports = todoList;
